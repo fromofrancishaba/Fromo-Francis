@@ -1,0 +1,98 @@
+---
+title: "ProjetR"
+author: "HABA Fromo Francis"
+date: "2024-04-08"
+output: html_document
+---
+```{r}
+#Importation et mise en Forme
+library(readxl)
+base_tp2 <- read_excel("Base TP2.xlsx")
+View(base_tp2)
+#Nombre de lignes
+nrow(base_tp2)
+#Nombre de colonnes
+ncol(base_tp2)
+#Recodage et labelisation
+#Recodage des modalités
+library(dplyr)
+base_tp2$sexe=recode_factor(base_tp2$sexe,'1'="Homme",'2'="Femme")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$sit_mat=recode_factor(base_tp2$sit_mat,'1'="Marié(e)",'3'="Veuf(ve)",'4'="Divorcé(e)",'5'="Séparé(e)",'6'="Célibataire")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$si_chef_men=recode_factor(base_tp2$si_chef_men,'1'="femme du chef de ménage",'2'="Chef de ménage",'3'="fils-fille du chef de ménage",'99'="Autres")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$ethnie=recode_factor(base_tp2$ethnie,'1'="Wolof",'2'="Pulaar/Toucouleur",'3'="Sérère",'4'="Mandika/Bambara",'5'="Soninké",'6'="Diola",'7'="Manjack",'8'="Maures",'9'="Balante",'77'="Autres")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$occupation=recode_factor(base_tp2$occupation,'1'="Agriculture,Elevage,sylviculture,pêche",'2'="Activités extractives",'3'="Activités de fabrication(Artisanat)",'4'="Activité de transformation",'5'="Production et distribution d'électricité et de gaz",'6'="Production et distribution d'eau,assainissement,traitement des déchets et dépollution")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$formation=recode_factor(base_tp2$formation,'1'="Non scolarisé",'2'="Elémentaire",'3'="Moyen",'4'="Secondaire",'5'="License",'6'="Master",'7'="Doctorat",'99'="Ne sait pas")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$niveau_alphabs=recode_factor(base_tp2$niveau_alphabs,'0'="Sans niveau",'1'="Sait lire dans une langue",'2'="Sait lire et écrire dans une langue")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$types_varietes=recode_factor(base_tp2$types_varietes,'1'="Traditionnelles",'2'="Améliorées")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+base_tp2$criteres_var=recode_factor(base_tp2$criteres_var,'1'="rendements élevés",'2'="taille des graines",'3'="résistantes aux maladies/ravageurs",'4'="tolérantes aux sécheresses",'5'="tolérantes aux inondations",'6'="Faible charge de travail",'7'="Faible quantité d'intrants",'8'="facile à transformer",'9'="Haute teneur en huile",'10'="Haut rendement après transformation",'11'="Demande sur le marché",'12'="Bon goût",'13'="Belle couleur",'14'="Haut rendement en fourrages",'15'="Qualité du fourrage",'16'="autres à spécifier")#Permet de simplifier l'analyse des données ou de faciliter la compréhension des resultats
+#Analyses descriptives
+Age_moyen<-mean(base_tp2$age,na.rm = TRUE)
+View(Age_moyen)#permet de calculer l'âge moyen
+Ecart_type<-sd(base_tp2$age)#Permet de calculer l'ecart-type
+View(Ecart_type)
+Variance<-var(base_tp2$age,na.rm = TRUE)#Permet de calculer la variance
+View(Variance)
+summary(base_tp2)
+library(magrittr)
+library(dplyr)
+TCG1<-base_tp2%>%gtsummary::tbl_cross(row="ethnie",col ="sexe",percent = "row")#Permet de spécifier les variables à inclure dans un tableau récapitulatif ou un résumé statistique
+TCG2<-base_tp2%>%gtsummary::tbl_cross(row="occupation",col = "sexe",percent = "row")#Permet de spécifier les variables à inclure dans un tableau récapitulatif ou un résumé statistique
+TCG3<-base_tp2%>%gtsummary::tbl_cross(row = "formation",col = "sexe",percent = "row")#Permet de spécifier les variables à inclure dans un tableau récapitulatif ou un résumé statistique
+TCG4<-base_tp2%>%gtsummary::tbl_cross(row = "sit_mat",col = "sexe",percent = "row")#Permet de spécifier les variables à inclure dans un tableau récapitulatif ou un résumé statistique
+TCG5<-base_tp2%>%gtsummary::tbl_cross(row = "si_chef_men",col = "sexe",percent = "row")#Permet de spécifier les variables à inclure dans un tableau récapitulatif ou un résumé statistique
+gtsummary::tbl_stack(tbls = list(TCG1,TCG2,TCG3,TCG4,TCG5))#Permet de faire la synthèse des cinq tableaux de contingence
+#Histogramme et secteur circulaire
+NEW_TAB<-table(base_tp2$age)#Permet de créer une table
+View(NEW_TAB)
+hist(NEW_TAB)#Permet de faire l'histogramme
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
